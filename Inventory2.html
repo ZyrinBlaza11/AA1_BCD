@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	
+    <title> Blaza, Cagaanan, Dalipe </title>
+	
+    <style>
+	
+       body {
+			background-image: url('https://www.kolpaper.com/wp-content/uploads/2020/10/Minecraft-Inventory-Desktop-Wallpaper.jpg');
+			background-size: 1300px;
+			background-repeat: no-repeat;
+			font-family: 'Arial', sans-serif;
+			background-color: #f0f0f0;
+			}
+
+			.container {
+			max-width: 800px;
+			margin: auto;
+			background-color: #9bdb64;
+			padding: 40px; 
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			h1 {
+			text-align: center;
+			margin-bottom: 30px; 
+			}
+
+			.Buttons {
+			text-align: center;
+			margin-bottom: 30px; 
+			}
+
+			button {
+			background-color: #26742d;
+			color: white; 
+			border: none; 
+			padding: 10px 20px; 
+			border-radius: 4px;
+			cursor: pointer; 
+			}
+
+			button:hover {
+			background-color: #2980b9; 
+			}
+
+			.Inventory {
+			margin-top: 40px;
+			}
+
+			table {
+			border-collapse: collapse;
+			width: 100%; 
+			}
+
+			th, td {
+			border: 1px solid #ddd; 
+			padding: 12px; 
+			text-align: left;
+			}
+
+			th {
+			background-color: #3498db; 
+			color: white;
+			}
+
+			tr:nth-child(even) {
+			background-color: #f2f2f2; 
+			}
+
+			tr:hover {
+			background-color: #ddd; 
+			}
+		
+    </style>
+	
+</head>
+
+<body>
+	
+    <div class="container">
+	
+        <h1> Your Inventory! </h1>
+		
+		<div class="Buttons">
+		
+			<button onclick="askForInput(1)"> Add Item </button>
+			<button onclick="askForInput(2)"> Remove Item </button>
+			<button onclick="askForInput(3)"> Change Item Name </button>
+			<button onclick="askForInput(4)"> Change Item Stock </button>
+			
+		</div>
+		
+		<div class="Inventory">
+		
+			<h2> Inventory </h2>
+			
+			<h3 style="text-align: center" id="InventoryProper"> </h3>
+			
+			<table id="table">
+			
+			</table>
+		
+		</div>
+		
+    </div>
+	
+	<script>
+	
+		var Inventory = [];
+		var NoItems = 0;
+		
+		function askForInput(Type){
+		
+			switch (Type){
+				case 1:
+					let Name = prompt("What is the name of said Item?");
+					let Num = prompt("How many do you have with said Item?");
+					while(isNaN(Num)){
+					Num = prompt("I didn't hear you clearly, can you say it again?");
+					}
+					addItem(Name, Num);
+				break;
+				case 2:
+					let Name2 = prompt("What Item do you want to remove?");
+					removeItem(Name2);
+				break;
+				case 3:
+					let Name3 = prompt("What is the name of said Item you want to add/subtract?");
+					let Name3_2 = prompt("What name would you like it to be?");
+					changeItemNameItem(Name3, Name3_2);
+				break;
+				case 4:
+					let Name4 = prompt("What is the name of said Item you want to add/subtract?");
+					let Num4 = prompt("How many do you wish to have added/removed on said Item?");
+					addNoOfItem(Name4, Num4);
+				break;
+		
+			}
+			
+		}
+		
+		function addItem(Name, Stock){
+		
+			let NewItem = [Name, Stock];
+			Inventory.push(NewItem);
+			NoItems++;
+			console.log(Inventory);
+			displayItems();
+		
+		}
+		
+		function removeItem(Name){
+		
+			let x = 0
+			
+			while(x != NoItems) {
+				
+				let Check = String(Inventory[x][0]);
+				
+				if(Name == Check){
+			
+					Inventory.splice(x, 1);
+					console.log(Inventory);
+					NoItems--;
+					displayItems();
+			
+				}
+				
+				x++
+				
+			}
+		
+		}
+		
+		function changeItemNameItem(Name, NameChange){
+		
+			let x = 0
+			
+			while(x != NoItems) {
+				
+				let Check = String(Inventory[x][0]);
+				
+				if(Name == Check){
+			
+					Inventory[x][0] = NameChange;
+					console.log(Inventory);
+					displayItems();
+			
+				}
+				
+				x++
+				
+			}
+		
+		}
+		
+		function addNoOfItem(Name, Stockchange){
+		
+			let x = 0
+			
+			while(x != NoItems) {
+				
+				let Check = String(Inventory[x][0]);
+				
+				if(Name == Check){
+			
+					Inventory[x][1] = parseInt(Inventory[x][1]) + parseInt(Stockchange);
+					console.log(Inventory);
+					displayItems();
+			
+				}
+				
+				x++
+				
+			}
+		
+		}
+		
+		function displayItems(){
+		
+			var x = 0
+			var newElement = document.createElement("p");
+			var table = document.getElementById("table");
+			table.innerHTML = "";
+
+			var newRow = table.insertRow();
+
+			var header1 = newRow.insertCell(0);
+			header1.textContent = "Item";
+
+			var header2 = newRow.insertCell(1);
+			header2.textContent = "Stock";
+
+			if(NoItems != 0){
+				
+				document.getElementById("InventoryProper").innerHTML = "Here are your Items!";
+				
+			}else{
+			
+				document.getElementById("InventoryProper").innerHTML = "You have no items again ;w;";
+			
+			}
+			
+			var newrow = 1;
+			
+			for(var x = 0; x < NoItems; x++){
+
+				var table = document.getElementById("table");
+				var row = table.insertRow(newrow);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				
+				cell1.innerHTML = Inventory[x][0];
+				cell2.innerHTML = Inventory[x][1];
+				newrow++;
+			}
+			
+		}
+	
+	</script>
+	
+</body>
+
+</html>
